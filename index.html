@@ -8,7 +8,7 @@
 *{box-sizing:border-box}:root{--navy:#071c34;--blue:#0a3d73;--cyan:#00a8e8;--lime:#b9e800;--gold:#f5c542;--red:#df3348;--bg:#f3f6f9}
 body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);text-align:center;margin:0;color:#102033}
 header{background:linear-gradient(135deg,#06172a,#0b3a69 60%,#08223e);color:#fff;padding:16px 12px;border-bottom:4px solid var(--lime)}
-h1{margin:0;font-size:clamp(23px,5vw,34px);display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}.league-logo{width:74px;height:74px;object-fit:contain;background:#fff;border-radius:15px;padding:7px}.subtitle{margin:9px 0 0;color:#dce9f5}
+h1{margin:0;font-size:clamp(23px,5vw,34px);display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}.league-logo{width:150px;height:82px;object-fit:contain;background:#fff;border-radius:15px;padding:8px 12px}.subtitle{margin:9px 0 0;color:#dce9f5}
 .controls{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:18px auto 10px;padding:0 12px}.controls label{font-weight:bold}.controls select{padding:9px 12px;font-size:15px;border:1px solid #cbd5df;border-radius:8px;background:#fff}
 .group-title{margin:12px auto 4px;font-size:21px;color:var(--navy)}.group-teams{font-size:13px;color:#64748b;margin-bottom:12px}
 .match{background:#fff;margin:10px auto;padding:15px;width:min(820px,calc(100% - 28px));border-radius:14px;display:grid;grid-template-columns:1fr 48px 58px 18px 58px 48px 1fr;align-items:center;gap:8px;box-shadow:0 3px 14px rgba(7,28,52,.09);border-left:4px solid var(--cyan)}
@@ -46,7 +46,11 @@ function svgBadge(name){const m=meta[name]||['un','#0a3d73','#b9e800'];const ab=
 function flagSources(name){const c=(meta[name]||['un'])[0];return [`https://flagcdn.com/w80/${c}.png`,`https://flagcdn.com/${c}.svg`,svgBadge(name)]}
 function setImg(img,name){const srcs=flagSources(name);let i=0;img.onerror=()=>{i++;if(i<srcs.length)img.src=srcs[i];else img.onerror=null};img.src=srcs[0];img.alt=name}
 function leagueLogo(){const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><rect width="160" height="160" rx="24" fill="#071c34"/><circle cx="80" cy="76" r="52" fill="none" stroke="#00a8e8" stroke-width="7"/><path d="M80 23 96 58l38 4-29 25 9 37-34-20-34 20 9-37-29-25 38-4z" fill="#b9e800"/><circle cx="80" cy="76" r="17" fill="#fff"/><text x="80" y="146" text-anchor="middle" font-family="Arial" font-size="14" font-weight="700" fill="#fff">NATIONS LEAGUE</text></svg>`;return 'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(svg)}
-document.getElementById('leagueLogo').src=leagueLogo();
+const leagueLogoEl=document.getElementById('leagueLogo');
+// Echtes UEFA Nations League Logo (SVG, transparenter Hintergrund).
+// Falls die externe Quelle einmal nicht erreichbar ist, bleibt das lokale SVG-Fallback sichtbar.
+leagueLogoEl.onerror=()=>{ leagueLogoEl.onerror=null; leagueLogoEl.src=leagueLogo(); };
+leagueLogoEl.src='https://assets.footylogos.com/logos/uefa-nations-league/uefa-nations-league-logo-footylogos.svg';
 function load(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}')}catch{return {}}}function save(x){localStorage.setItem(STORAGE_KEY,JSON.stringify(x))}function key(x){return `${x.d}|${x.g}|${x.h}|${x.a}`}
 const groupSelect=document.getElementById('groupSelect'),daySelect=document.getElementById('matchday');Object.keys(groups).forEach(g=>groupSelect.add(new Option(`Gruppe ${g}`,g)));for(let d=1;d<=6;d++)daySelect.add(new Option(`Spieltag ${d}`,d));groupSelect.value=localStorage.getItem(GROUP_KEY)||'A2';daySelect.value=localStorage.getItem(DAY_KEY)||'1';
 groupSelect.onchange=()=>{localStorage.setItem(GROUP_KEY,groupSelect.value);render()};daySelect.onchange=()=>{localStorage.setItem(DAY_KEY,daySelect.value);renderMatches()};
