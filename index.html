@@ -17,17 +17,17 @@ h1{background:linear-gradient(135deg,var(--nl-navy),#0a3d73 62%,#06111f);color:w
 .group-info{font-size:13px;color:#697480;margin:4px 12px 12px}
 .match{background:white;margin:12px auto;padding:18px;width:min(780px,calc(100% - 28px));border-radius:14px;display:flex;align-items:center;justify-content:center;gap:10px;min-height:82px;flex-wrap:wrap;box-shadow:0 3px 14px rgba(7,28,52,.10);border-top:3px solid rgba(0,168,232,.18)}
 .match select,.match input{padding:9px;font-size:14px}.match select{min-width:165px}.match input{width:58px;text-align:center;font-size:18px;font-weight:bold}
-.flag{width:46px;height:46px;display:inline-flex;align-items:center;justify-content:center;font-size:38px;line-height:1;flex-shrink:0;background:#fff;border:1px solid #d9e0e7;border-radius:8px;box-shadow:0 1px 4px rgba(7,28,52,.10)}
+.flag{width:46px;height:32px;object-fit:cover;display:block;flex-shrink:0;background:#fff;border:1px solid #d9e0e7;border-radius:5px;box-shadow:0 1px 4px rgba(7,28,52,.10)}
 .score-separator{font-size:20px;font-weight:bold}
 button{padding:8px 13px;border:none;background:var(--nl-blue);color:white;border-radius:7px;cursor:pointer;font-size:14px}
 button:hover{background:#062c54}button.delete{background:#d8324a}button.delete:hover{background:#b5263b}.add-button{margin:5px 0 14px;font-size:15px}
 h2{margin-top:25px}.table-wrapper{overflow-x:auto;padding:0 10px 30px}
 table{margin:12px auto;border-collapse:collapse;width:min(820px,100%);background:white;box-shadow:0 3px 14px rgba(7,28,52,.10);border-radius:12px;overflow:hidden}
 th,td{padding:9px 8px;border-bottom:1px solid #e8edf2}th{background:var(--nl-navy);color:white}td:first-child,th:first-child{width:46px;text-align:center}
-td.team-cell{text-align:left;min-width:210px;font-weight:600}.table-flag{display:inline-flex;width:30px;height:26px;align-items:center;justify-content:center;text-align:center;font-size:24px;line-height:1;vertical-align:middle;margin-right:8px;background:#fff;border:1px solid #d9e0e7;border-radius:5px}
+td.team-cell{text-align:left;min-width:210px;font-weight:600}.table-flag{width:30px;height:21px;object-fit:cover;vertical-align:middle;margin-right:8px;background:#fff;border:1px solid #d9e0e7;border-radius:3px}
 .legend{width:min(820px,calc(100% - 30px));margin:0 auto 10px;font-size:13px;color:#5f6670;text-align:left}.empty{margin:25px auto;color:#6e7780}
 tr.qualify{background:#e8fbff}tr.playoff{background:#fff8dc}tr.relegation{background:#fde9ec}tr.promotion{background:#eefbe9}
-@media(max-width:650px){.match{gap:7px;padding:14px 8px}.match select{min-width:125px;max-width:155px}.flag{width:40px;height:40px;font-size:32px}th,td{padding:8px 5px;font-size:13px}td.team-cell{min-width:175px}}
+@media(max-width:650px){.match{gap:7px;padding:14px 8px}.match select{min-width:125px;max-width:155px}.flag{width:40px;height:28px}th,td{padding:8px 5px;font-size:13px}td.team-cell{min-width:175px}}
 </style>
 </head>
 <body>
@@ -54,7 +54,7 @@ const STORAGE_KEY="nations-league-manager-2026-27";
 const GROUP_KEY="nations-league-current-group-2026-27";
 const DAY_KEY="nations-league-current-matchday-2026-27";
 const groups={"A1": ["Frankreich", "Italien", "Belgien", "Türkei"], "A2": ["Deutschland", "Niederlande", "Serbien", "Griechenland"], "A3": ["Spanien", "Kroatien", "England", "Tschechien"], "A4": ["Portugal", "Dänemark", "Norwegen", "Wales"], "B1": ["Schottland", "Schweiz", "Slowenien", "Nordmazedonien"], "B2": ["Ungarn", "Ukraine", "Georgien", "Nordirland"], "B3": ["Israel", "Österreich", "Irland", "Kosovo"], "B4": ["Polen", "Bosnien und Herzegowina", "Rumänien", "Schweden"], "C1": ["Albanien", "Finnland", "Belarus", "San Marino"], "C2": ["Montenegro", "Armenien", "Zypern", "Lettland"], "C3": ["Kasachstan", "Slowakei", "Färöer", "Moldau"], "C4": ["Island", "Bulgarien", "Estland", "Luxemburg"], "D1": ["Gibraltar", "Malta", "Andorra"], "D2": ["Litauen", "Aserbaidschan", "Liechtenstein"]};
-const flags={"Frankreich": "🇫🇷", "Italien": "🇮🇹", "Belgien": "🇧🇪", "Türkei": "🇹🇷", "Deutschland": "🇩🇪", "Niederlande": "🇳🇱", "Serbien": "🇷🇸", "Griechenland": "🇬🇷", "Spanien": "🇪🇸", "Kroatien": "🇭🇷", "England": "🏴", "Tschechien": "🇨🇿", "Portugal": "🇵🇹", "Dänemark": "🇩🇰", "Norwegen": "🇳🇴", "Wales": "🏴", "Schottland": "🏴", "Schweiz": "🇨🇭", "Slowenien": "🇸🇮", "Nordmazedonien": "🇲🇰", "Ungarn": "🇭🇺", "Ukraine": "🇺🇦", "Georgien": "🇬🇪", "Nordirland": "🇬🇧", "Israel": "🇮🇱", "Österreich": "🇦🇹", "Irland": "🇮🇪", "Kosovo": "🇽🇰", "Polen": "🇵🇱", "Bosnien und Herzegowina": "🇧🇦", "Rumänien": "🇷🇴", "Schweden": "🇸🇪", "Albanien": "🇦🇱", "Finnland": "🇫🇮", "Belarus": "🇧🇾", "San Marino": "🇸🇲", "Montenegro": "🇲🇪", "Armenien": "🇦🇲", "Zypern": "🇨🇾", "Lettland": "🇱🇻", "Kasachstan": "🇰🇿", "Slowakei": "🇸🇰", "Färöer": "🇫🇴", "Moldau": "🇲🇩", "Island": "🇮🇸", "Bulgarien": "🇧🇬", "Estland": "🇪🇪", "Luxemburg": "🇱🇺", "Gibraltar": "🇬🇮", "Malta": "🇲🇹", "Andorra": "🇦🇩", "Litauen": "🇱🇹", "Aserbaidschan": "🇦🇿", "Liechtenstein": "🇱🇮"};
+const flagCodes={"Frankreich":"fr","Italien":"it","Belgien":"be","Türkei":"tr","Deutschland":"de","Niederlande":"nl","Serbien":"rs","Griechenland":"gr","Spanien":"es","Kroatien":"hr","England":"gb-eng","Tschechien":"cz","Portugal":"pt","Dänemark":"dk","Norwegen":"no","Wales":"gb-wls","Schottland":"gb-sct","Schweiz":"ch","Slowenien":"si","Nordmazedonien":"mk","Ungarn":"hu","Ukraine":"ua","Georgien":"ge","Nordirland":"gb-nir","Israel":"il","Österreich":"at","Irland":"ie","Kosovo":"xk","Polen":"pl","Bosnien und Herzegowina":"ba","Rumänien":"ro","Schweden":"se","Albanien":"al","Finnland":"fi","Belarus":"by","San Marino":"sm","Montenegro":"me","Armenien":"am","Zypern":"cy","Lettland":"lv","Kasachstan":"kz","Slowakei":"sk","Färöer":"fo","Moldau":"md","Island":"is","Bulgarien":"bg","Estland":"ee","Luxemburg":"lu","Gibraltar":"gi","Malta":"mt","Andorra":"ad","Litauen":"lt","Aserbaidschan":"az","Liechtenstein":"li"};
 
 function leagueLogo(){
  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
@@ -75,7 +75,14 @@ function loadData(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}
 function saveData(data){localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}
 function groupData(data,g){if(!data[g])data[g]={};return data[g]}
 function teamOptions(selected){return teams().map(t=>`<option value="${t}" ${t===selected?"selected":""}>${t}</option>`).join("")}
-function flag(name){return flags[name]||"🏳️"}
+function flagUrl(name){
+ const code=flagCodes[name];
+ return code ? `https://flagcdn.com/w80/${code}.png` : "";
+}
+function flagImg(name, cls="flag"){
+ const url=flagUrl(name);
+ return `<img class="${cls}" src="${url}" alt="Flagge ${name}" title="${name}" loading="lazy">`;
+}
 
 function initControls(){
  const gs=document.getElementById("groupSelect");
@@ -93,13 +100,13 @@ function renderMatches(){
  if(!matches.length){document.getElementById("matches").innerHTML=`<div class="empty">Noch keine Spiele für Spieltag ${day} eingetragen.</div>`;return}
  let out="";
  matches.forEach((m,i)=>out+=`<div class="match">
- <span class="flag" id="flag1-${i}">${flag(m.team1)}</span>
+ <span id="flag1-${i}">${flagImg(m.team1)}</span>
  <select id="team1-${i}">${teamOptions(m.team1)}</select>
  <input type="number" min="0" max="99" id="t1-${i}" value="${m.t1??""}" aria-label="Tore Heimteam">
  <span class="score-separator">:</span>
  <input type="number" min="0" max="99" id="t2-${i}" value="${m.t2??""}" aria-label="Tore Auswärtsteam">
  <select id="team2-${i}">${teamOptions(m.team2)}</select>
- <span class="flag" id="flag2-${i}">${flag(m.team2)}</span>
+ <span id="flag2-${i}">${flagImg(m.team2)}</span>
  <button onclick="save(${i})">💾 Speichern</button><button class="delete" onclick="removeMatch(${i})">❌</button></div>`);
  document.getElementById("matches").innerHTML=out;
  document.querySelectorAll(".match select,.match input").forEach(el=>{
@@ -115,8 +122,8 @@ function saveAuto(){
   matches[i].team2=document.getElementById(`team2-${i}`).value;
   matches[i].t1=document.getElementById(`t1-${i}`).value;
   matches[i].t2=document.getElementById(`t2-${i}`).value;
-  document.getElementById(`flag1-${i}`).textContent=flag(matches[i].team1);
-  document.getElementById(`flag2-${i}`).textContent=flag(matches[i].team2);
+  document.getElementById(`flag1-${i}`).innerHTML=flagImg(matches[i].team1);
+  document.getElementById(`flag2-${i}`).innerHTML=flagImg(matches[i].team2);
  });
  gd[day]=matches;saveData(data);renderTable();
 }
@@ -158,7 +165,7 @@ function renderTable(){
   if(a>b)table[m.team1].points+=3;else if(b>a)table[m.team2].points+=3;else{table[m.team1].points++;table[m.team2].points++}
  })});
  const sorted=Object.entries(table).sort((a,b)=>b[1].points-a[1].points||((b[1].goalsFor-b[1].goalsAgainst)-(a[1].goalsFor-a[1].goalsAgainst))||b[1].goalsFor-a[1].goalsFor||a[0].localeCompare(b[0],"de"));
- document.getElementById("table").innerHTML=sorted.map(([t,v],i)=>{const d=v.goalsFor-v.goalsAgainst;return `<tr class="${rowClass(i,g[0])}"><td>${i+1}</td><td class="team-cell"><span class="table-flag">${flag(t)}</span>${t}</td><td>${v.played}</td><td><strong>${v.points}</strong></td><td>${v.goalsFor}:${v.goalsAgainst}</td><td>${d>0?"+":""}${d}</td></tr>`}).join("");
+ document.getElementById("table").innerHTML=sorted.map(([t,v],i)=>{const d=v.goalsFor-v.goalsAgainst;return `<tr class="${rowClass(i,g[0])}"><td>${i+1}</td><td class="team-cell">${flagImg(t,"table-flag")}${t}</td><td>${v.played}</td><td><strong>${v.points}</strong></td><td>${v.goalsFor}:${v.goalsAgainst}</td><td>${d>0?"+":""}${d}</td></tr>`}).join("");
 }
 function renderAll(){renderInfo();renderMatches();renderLegend();renderTable()}
 initControls();renderAll();
