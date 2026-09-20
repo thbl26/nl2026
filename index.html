@@ -159,8 +159,19 @@ function renderLegend(){
  };document.getElementById("legend").textContent=txt[l];
 }
 function renderTable(){
- const data=loadData(),g=currentGroup(),table={};groupTeams().forEach(t=>table[t]={played:0,points:0,goalsFor:0,goalsAgainst:0});
+ const data=loadData(),g=currentGroup(),table={};
  const gd=data[g]||{};
+ // Start with the original countries of the selected group.
+ groupTeams().forEach(t=>table[t]={played:0,points:0,goalsFor:0,goalsAgainst:0});
+ // Also add every country that has been selected in any match of this group.
+ Object.values(gd).forEach(day=>{
+  if(!Array.isArray(day))return;
+  day.forEach(m=>{
+   [m.team1,m.team2].forEach(t=>{
+    if(t && !table[t]) table[t]={played:0,points:0,goalsFor:0,goalsAgainst:0};
+   });
+  });
+ });
  Object.values(gd).forEach(day=>{if(!Array.isArray(day))return;day.forEach(m=>{
   if(m.t1===""||m.t2===""||!table[m.team1]||!table[m.team2]||m.team1===m.team2)return;
   const a=parseInt(m.t1,10),b=parseInt(m.t2,10);if(Number.isNaN(a)||Number.isNaN(b)||a<0||b<0)return;
