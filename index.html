@@ -70,7 +70,9 @@ document.getElementById("leagueLogo").src=leagueLogo();
 
 function currentGroup(){return document.getElementById("groupSelect").value}
 function currentDay(){return document.getElementById("matchday").value}
-function teams(){return groups[currentGroup()]||[]}
+const allTeams=[...new Set(Object.values(groups).flat())];
+function groupTeams(){return groups[currentGroup()]||[]}
+function teams(){return allTeams}
 function loadData(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}")}catch{return {}}}
 function saveData(data){localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}
 function groupData(data,g){if(!data[g])data[g]={};return data[g]}
@@ -94,7 +96,7 @@ function initControls(){
 }
 function changeGroup(){localStorage.setItem(GROUP_KEY,currentGroup());renderAll()}
 function changeMatchday(){localStorage.setItem(DAY_KEY,currentDay());renderMatches();renderTable()}
-function renderInfo(){document.getElementById("groupInfo").textContent=teams().join(" · ")}
+function renderInfo(){document.getElementById("groupInfo").textContent=groupTeams().join(" · ")}
 function renderMatches(){
  const data=loadData(),g=currentGroup(),day=currentDay(),matches=(data[g]&&data[g][day])||[];
  if(!matches.length){document.getElementById("matches").innerHTML=`<div class="empty">Noch keine Spiele für Spieltag ${day} eingetragen.</div>`;return}
@@ -131,8 +133,9 @@ function addMatch(){
  const data=loadData(),g=currentGroup(),day=currentDay(),gd=groupData(data,g);
  if(!gd[day])gd[day]=[];
  const used=new Set();gd[day].forEach(m=>{used.add(m.team1);used.add(m.team2)});
- const free=teams().filter(t=>!used.has(t));
- gd[day].push({team1:free[0]||teams()[0],team2:free[1]||teams()[1],t1:"",t2:""});
+ const preferred=groupTeams().filter(t=>!used.has(t));
+ const free=allTeams.filter(t=>!used.has(t));
+ gd[day].push({team1:preferred[0]||free[0]||allTeams[0],team2:preferred[1]||free[1]||allTeams[1],t1:"",t2:""});
  saveData(data);renderMatches();
 }
 function removeMatch(i){
@@ -156,7 +159,7 @@ function renderLegend(){
  };document.getElementById("legend").textContent=txt[l];
 }
 function renderTable(){
- const data=loadData(),g=currentGroup(),table={};teams().forEach(t=>table[t]={played:0,points:0,goalsFor:0,goalsAgainst:0});
+ const data=loadData(),g=currentGroup(),table={};groupTeams().forEach(t=>table[t]={played:0,points:0,goalsFor:0,goalsAgainst:0});
  const gd=data[g]||{};
  Object.values(gd).forEach(day=>{if(!Array.isArray(day))return;day.forEach(m=>{
   if(m.t1===""||m.t2===""||!table[m.team1]||!table[m.team2]||m.team1===m.team2)return;
