@@ -5,60 +5,162 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>UEFA Nations League Manager 2026/27</title>
 <style>
-*{box-sizing:border-box}:root{--navy:#071c34;--blue:#0a3d73;--cyan:#00a8e8;--lime:#b9e800;--gold:#f5c542;--red:#df3348;--bg:#f3f6f9}
-body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);text-align:center;margin:0;color:#102033}
-header{background:linear-gradient(135deg,#06172a,#0b3a69 60%,#08223e);color:#fff;padding:16px 12px;border-bottom:4px solid var(--lime)}
-h1{margin:0;font-size:clamp(23px,5vw,34px);display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}.league-logo{width:150px;height:92px;object-fit:cover;background:#071c34;border-radius:15px;padding:0;display:block}.subtitle{margin:9px 0 0;color:#dce9f5}
-.controls{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:18px auto 10px;padding:0 12px}.controls label{font-weight:bold}.controls select{padding:9px 12px;font-size:15px;border:1px solid #cbd5df;border-radius:8px;background:#fff}
-.group-title{margin:12px auto 4px;font-size:21px;color:var(--navy)}.group-teams{font-size:13px;color:#64748b;margin-bottom:12px}
-.match{background:#fff;margin:10px auto;padding:15px;width:min(820px,calc(100% - 28px));border-radius:14px;display:grid;grid-template-columns:1fr 48px 58px 18px 58px 48px 1fr;align-items:center;gap:8px;box-shadow:0 3px 14px rgba(7,28,52,.09);border-left:4px solid var(--cyan)}
-.team{display:flex;align-items:center;gap:8px;font-weight:700}.team.home{justify-content:flex-end;text-align:right}.team.away{justify-content:flex-start;text-align:left}.flag{width:42px;height:29px;object-fit:cover;border-radius:4px;box-shadow:0 0 0 1px #d9e0e7;background:#eef2f6}.match input{width:58px;padding:9px 5px;text-align:center;font-size:18px;font-weight:bold;border:1px solid #cbd5df;border-radius:8px}.score-separator{font-weight:800;font-size:20px}.date{font-size:12px;color:#6b7280}.save-state{font-size:12px;color:#6b7280;margin:8px 0 0}
-h2{margin:27px 0 8px}.legend{width:min(760px,calc(100% - 30px));margin:0 auto 10px;font-size:13px;color:#64748b;text-align:left}.table-wrapper{overflow-x:auto;padding:0 10px 30px}table{margin:12px auto;border-collapse:collapse;width:min(760px,100%);background:#fff;box-shadow:0 3px 14px rgba(7,28,52,.09);border-radius:12px;overflow:hidden}th,td{padding:9px 8px;border-bottom:1px solid #e8edf2}th{background:var(--navy);color:#fff}td:first-child,th:first-child{width:46px;text-align:center}td.team-cell{text-align:left;min-width:190px;font-weight:700}td.team-cell img{width:30px;height:21px;object-fit:cover;border-radius:3px;vertical-align:middle;margin-right:8px;box-shadow:0 0 0 1px #d9e0e7}
-tbody tr.qualify{background:#e6f8ff}tbody tr.playoff{background:#fff8dc}tbody tr.relegation{background:#fde9ec}tbody tr.promotion{background:#eaf9e4}
-.footer-note{font-size:12px;color:#778395;padding:0 15px 25px}.reset{margin:0 0 25px;padding:8px 13px;border:0;border-radius:8px;background:#dce4ec;color:#26384a;cursor:pointer}.reset:hover{background:#cdd8e2}
-.add-button{margin:14px 0 4px;padding:10px 16px;border:0;border-radius:9px;background:var(--blue);color:#fff;font-weight:700;cursor:pointer}.add-button:hover{filter:brightness(1.08)}
-@media(max-width:700px){.match{grid-template-columns:1fr 40px 48px 14px 48px 40px 1fr;padding:13px 8px;gap:5px}.flag{width:36px;height:25px}.match input{width:48px}.team{font-size:13px}.date{display:none}th,td{padding:8px 5px;font-size:13px}td.team-cell{min-width:165px}}
-@media(max-width:510px){.match{grid-template-columns:1fr 42px 14px 42px 1fr}.team .flag{display:none}.date{display:none}.match>.flag{display:none}.match input{width:42px;padding:8px 3px}.team{font-size:12px}}
+*{box-sizing:border-box}
+:root{--nl-navy:#071c34;--nl-blue:#0a3d73;--nl-cyan:#00a8e8;--nl-lime:#b9e800;--nl-red:#df3348}
+body{font-family:Arial,Helvetica,sans-serif;background:#f3f4f8;text-align:center;margin:0;color:#19131f}
+h1{background:linear-gradient(135deg,var(--nl-navy),#0a3d73 62%,#06111f);color:white;padding:16px 12px;margin:0;font-size:clamp(24px,5vw,34px);display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;border-bottom:4px solid var(--nl-lime)}
+.league-logo{width:86px;height:86px;object-fit:contain;background:white;border-radius:14px;padding:3px}
+.subtitle{margin:12px 0 18px;color:#5f6670}
+.controls{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.controls label{font-weight:bold} select,input{border:1px solid #ccd4dd;border-radius:7px;background:white}
+.controls select{padding:9px 12px;font-size:15px}
+.group-info{font-size:13px;color:#697480;margin:4px 12px 12px}
+.match{background:white;margin:12px auto;padding:18px;width:min(780px,calc(100% - 28px));border-radius:14px;display:flex;align-items:center;justify-content:center;gap:10px;min-height:82px;flex-wrap:wrap;box-shadow:0 3px 14px rgba(7,28,52,.10);border-top:3px solid rgba(0,168,232,.18)}
+.match select,.match input{padding:9px;font-size:14px}.match select{min-width:165px}.match input{width:58px;text-align:center;font-size:18px;font-weight:bold}
+.flag{width:46px;height:46px;display:inline-flex;align-items:center;justify-content:center;font-size:34px;line-height:1;flex-shrink:0}
+.score-separator{font-size:20px;font-weight:bold}
+button{padding:8px 13px;border:none;background:var(--nl-blue);color:white;border-radius:7px;cursor:pointer;font-size:14px}
+button:hover{background:#062c54}button.delete{background:#d8324a}button.delete:hover{background:#b5263b}.add-button{margin:5px 0 14px;font-size:15px}
+h2{margin-top:25px}.table-wrapper{overflow-x:auto;padding:0 10px 30px}
+table{margin:12px auto;border-collapse:collapse;width:min(820px,100%);background:white;box-shadow:0 3px 14px rgba(7,28,52,.10);border-radius:12px;overflow:hidden}
+th,td{padding:9px 8px;border-bottom:1px solid #e8edf2}th{background:var(--nl-navy);color:white}td:first-child,th:first-child{width:46px;text-align:center}
+td.team-cell{text-align:left;min-width:210px;font-weight:600}.table-flag{display:inline-block;width:32px;text-align:center;font-size:22px;vertical-align:middle;margin-right:7px}
+.legend{width:min(820px,calc(100% - 30px));margin:0 auto 10px;font-size:13px;color:#5f6670;text-align:left}.empty{margin:25px auto;color:#6e7780}
+tr.qualify{background:#e8fbff}tr.playoff{background:#fff8dc}tr.relegation{background:#fde9ec}tr.promotion{background:#eefbe9}
+@media(max-width:650px){.match{gap:7px;padding:14px 8px}.match select{min-width:125px;max-width:155px}.flag{width:38px;height:38px;font-size:29px}th,td{padding:8px 5px;font-size:13px}td.team-cell{min-width:175px}}
 </style>
 </head>
 <body>
-<header><h1><img class="league-logo" id="leagueLogo" alt="Nations League"><span>UEFA Nations League Manager 2026/27</span></h1><p class="subtitle">Ergebnisse eintragen – Gruppentabelle wird automatisch berechnet</p></header>
-<div class="controls"><label for="groupSelect">Gruppe:</label><select id="groupSelect"></select><label for="matchday">Spieltag:</label><select id="matchday"></select></div>
-<div class="group-title" id="groupTitle"></div><div class="group-teams" id="groupTeams"></div><div id="matches"></div><button class="add-button" onclick="addMatch()">➕ Spiel hinzufügen</button><div class="save-state">💾 Ergebnisse werden automatisch im Browser gespeichert.</div>
-<h2>📊 Tabelle</h2><div class="legend" id="legend"></div><div class="table-wrapper"><table><thead><tr><th>Pl.</th><th>Team</th><th>Sp.</th><th>Pkt.</th><th>Tore</th><th>Diff.</th></tr></thead><tbody id="table"></tbody></table></div>
-<button class="reset" onclick="resetGroup()">Ergebnisse dieser Gruppe zurücksetzen</button><div class="footer-note">Stand: Nations-League-Saison 2026/27 · Ligaphase mit den offiziellen Gruppen und Spielpaarungen.</div>
+<h1>
+<img class="league-logo" id="leagueLogo" alt="Nations League">
+<span>UEFA Nations League Manager 2026/27</span>
+</h1>
+<p class="subtitle">Dein eigener Ergebnis- und Tabellenrechner</p>
+<div class="controls">
+<label for="groupSelect">Gruppe:</label><select id="groupSelect" onchange="changeGroup()"></select>
+<label for="matchday">Spieltag:</label><select id="matchday" onchange="changeMatchday()"></select>
+</div>
+<div class="group-info" id="groupInfo"></div>
+<div id="matches"></div>
+<button class="add-button" onclick="addMatch()">➕ Spiel hinzufügen</button>
+<h2>📊 Tabelle</h2>
+<div class="legend" id="legend"></div>
+<div class="table-wrapper"><table>
+<thead><tr><th>Pl.</th><th>Team</th><th>Sp.</th><th>Pkt.</th><th>Tore</th><th>Diff.</th></tr></thead>
+<tbody id="table"></tbody>
+</table></div>
 <script>
-const STORAGE_KEY='nations-league-2026-27-results';const CUSTOM_KEY='nations-league-2026-27-custom';const GROUP_KEY='nations-league-2026-27-group';const DAY_KEY='nations-league-2026-27-day';
-const groups={
-A1:['Frankreich','Italien','Belgien','Türkei'],A2:['Deutschland','Niederlande','Serbien','Griechenland'],A3:['Spanien','Kroatien','England','Tschechien'],A4:['Portugal','Dänemark','Norwegen','Wales'],
-B1:['Schottland','Schweiz','Slowenien','Nordmazedonien'],B2:['Ungarn','Ukraine','Georgien','Nordirland'],B3:['Israel','Österreich','Irland','Kosovo'],B4:['Polen','Bosnien und Herzegowina','Rumänien','Schweden'],
-C1:['Albanien','Finnland','Belarus','San Marino'],C2:['Montenegro','Armenien','Zypern','Lettland'],C3:['Kasachstan','Slowakei','Färöer','Moldau'],C4:['Island','Bulgarien','Estland','Luxemburg'],
-D1:['Gibraltar','Malta','Andorra'],D2:['Litauen','Aserbaidschan','Liechtenstein']};
-const meta={
-'Frankreich':['fr','#163a8c','#ef3340'],'Italien':['it','#008c45','#f4f5f0'],'Belgien':['be','#111111','#fdda24'],'Türkei':['tr','#e30a17','#fff'],'Deutschland':['de','#111','#dd0000'],'Niederlande':['nl','#f36c21','#21468b'],'Serbien':['rs','#c6363c','#0c4076'],'Griechenland':['gr','#0d5eaf','#fff'],'Spanien':['es','#aa151b','#f1bf00'],'Kroatien':['hr','#ff0000','#fff'],'England':['gb-eng','#fff','#cf081f'],'Tschechien':['cz','#11457e','#d7141a'],'Portugal':['pt','#046a38','#da291c'],'Dänemark':['dk','#c8102e','#fff'],'Norwegen':['no','#ba0c2f','#00205b'],'Wales':['gb-wls','#d30731','#fff'],'Schottland':['gb-sct','#005eb8','#fff'],'Schweiz':['ch','#d52b1e','#fff'],'Slowenien':['si','#005da4','#fff'],'Nordmazedonien':['mk','#d20000','#ffe600'],'Ungarn':['hu','#ce2939','#477050'],'Ukraine':['ua','#0057b7','#ffd700'],'Georgien':['ge','#fff','#ff0000'],'Nordirland':['gb-nir','#fff','#169b62'],'Israel':['il','#fff','#0038b8'],'Österreich':['at','#ed2939','#fff'],'Irland':['ie','#169b62','#ff883e'],'Kosovo':['xk','#244aa5','#d0a650'],'Polen':['pl','#fff','#dc143c'],'Bosnien und Herzegowina':['ba','#002395','#fecb00'],'Rumänien':['ro','#002b7f','#fcd116'],'Schweden':['se','#006aa7','#fecc00'],'Albanien':['al','#e41e20','#111'],'Finnland':['fi','#fff','#003580'],'Belarus':['by','#d22730','#00af66'],'San Marino':['sm','#5eb6e4','#fff'],'Montenegro':['me','#c40308','#d3ae3b'],'Armenien':['am','#d90012','#f2a800'],'Zypern':['cy','#fff','#d57800'],'Lettland':['lv','#9e3039','#fff'],'Kasachstan':['kz','#00afca','#fec50c'],'Slowakei':['sk','#fff','#0b4ea2'],'Färöer':['fo','#fff','#0065bd'],'Moldau':['md','#0046ae','#ffd200'],'Island':['is','#02529c','#dc1e35'],'Bulgarien':['bg','#fff','#00966e'],'Estland':['ee','#0072ce','#111'],'Luxemburg':['lu','#00a1de','#ef3340'],'Gibraltar':['gi','#fff','#da000c'],'Malta':['mt','#fff','#cf142b'],'Andorra':['ad','#10069f','#fedf00'],'Litauen':['lt','#fdb913','#006a44'],'Aserbaidschan':['az','#00b5e2','#ef3340'],'Liechtenstein':['li','#002b7f','#ce1126']};
-const f=(d,g,h,a)=>({d,g,h,a});const fixtures=[
-f(1,'D1','Andorra','Malta'),f(1,'A2','Niederlande','Deutschland'),f(1,'A2','Serbien','Griechenland'),f(1,'A4','Norwegen','Dänemark'),f(1,'A4','Portugal','Wales'),f(1,'B3','Österreich','Israel'),f(1,'B3','Kosovo','Irland'),f(1,'D2','Liechtenstein','Litauen'),f(1,'B2','Georgien','Nordirland'),f(1,'C2','Armenien','Lettland'),f(1,'A1','Italien','Belgien'),f(1,'A1','Türkei','Frankreich'),f(1,'B2','Ungarn','Ukraine'),f(1,'B4','Polen','Bosnien und Herzegowina'),f(1,'B4','Schweden','Rumänien'),f(1,'C2','Montenegro','Zypern'),f(1,'B1','Slowenien','Schottland'),f(1,'C1','San Marino','Finnland'),f(1,'C3','Färöer','Kasachstan'),f(1,'C4','Bulgarien','Luxemburg'),f(1,'C4','Island','Estland'),f(1,'A3','Tschechien','Kroatien'),f(1,'A3','England','Spanien'),f(1,'B1','Nordmazedonien','Schweiz'),f(1,'C1','Albanien','Belarus'),f(1,'C3','Slowakei','Moldau'),
-f(2,'D2','Litauen','Aserbaidschan'),f(2,'A2','Serbien','Niederlande'),f(2,'A4','Dänemark','Wales'),f(2,'B3','Österreich','Kosovo'),f(2,'D1','Gibraltar','Andorra'),f(2,'A2','Deutschland','Griechenland'),f(2,'A4','Norwegen','Portugal'),f(2,'B3','Israel','Irland'),f(2,'B2','Georgien','Ukraine'),f(2,'C2','Armenien','Montenegro'),f(2,'A1','Belgien','Frankreich'),f(2,'A1','Türkei','Italien'),f(2,'B2','Nordirland','Ungarn'),f(2,'B4','Rumänien','Bosnien und Herzegowina'),f(2,'B4','Schweden','Polen'),f(2,'C2','Lettland','Zypern'),f(2,'C1','Finnland','Belarus'),f(2,'C3','Moldau','Färöer'),f(2,'A3','Tschechien','England'),f(2,'A3','Spanien','Kroatien'),f(2,'B1','Schottland','Schweiz'),f(2,'B1','Slowenien','Nordmazedonien'),f(2,'C1','San Marino','Albanien'),f(2,'C3','Slowakei','Kasachstan'),f(2,'C4','Bulgarien','Estland'),f(2,'C4','Luxemburg','Island'),
-f(3,'D2','Aserbaidschan','Liechtenstein'),f(3,'A2','Deutschland','Serbien'),f(3,'A2','Griechenland','Niederlande'),f(3,'A4','Dänemark','Portugal'),f(3,'A4','Wales','Norwegen'),f(3,'B3','Israel','Kosovo'),f(3,'B3','Irland','Österreich'),f(3,'D1','Malta','Gibraltar'),f(3,'C3','Kasachstan','Moldau'),f(3,'C2','Zypern','Armenien'),f(3,'A1','Belgien','Türkei'),f(3,'A1','Frankreich','Italien'),f(3,'B2','Ungarn','Georgien'),f(3,'B2','Ukraine','Nordirland'),f(3,'B4','Bosnien und Herzegowina','Schweden'),f(3,'B4','Polen','Rumänien'),f(3,'C2','Lettland','Montenegro'),f(3,'C3','Färöer','Slowakei'),f(3,'C1','Finnland','Albanien'),f(3,'A3','Kroatien','England'),f(3,'C1','Belarus','San Marino'),f(3,'C4','Estland','Luxemburg'),f(3,'C4','Island','Bulgarien'),f(3,'A3','Spanien','Tschechien'),f(3,'B1','Nordmazedonien','Schottland'),f(3,'B1','Schweiz','Slowenien'),
-f(4,'D2','Aserbaidschan','Litauen'),f(4,'B3','Kosovo','Österreich'),f(4,'D1','Malta','Andorra'),f(4,'A2','Griechenland','Deutschland'),f(4,'A2','Niederlande','Serbien'),f(4,'A4','Portugal','Norwegen'),f(4,'A4','Wales','Dänemark'),f(4,'B3','Irland','Israel'),f(4,'C2','Zypern','Lettland'),f(4,'A1','Frankreich','Belgien'),f(4,'A1','Italien','Türkei'),f(4,'B2','Nordirland','Georgien'),f(4,'B2','Ukraine','Ungarn'),f(4,'B4','Bosnien und Herzegowina','Polen'),f(4,'B4','Rumänien','Schweden'),f(4,'C2','Montenegro','Armenien'),f(4,'C3','Kasachstan','Färöer'),f(4,'A3','Kroatien','Spanien'),f(4,'A3','England','Tschechien'),f(4,'B1','Schottland','Slowenien'),f(4,'B1','Schweiz','Nordmazedonien'),f(4,'C1','Albanien','San Marino'),f(4,'C1','Belarus','Finnland'),f(4,'C3','Moldau','Slowakei'),f(4,'C4','Estland','Island'),f(4,'C4','Luxemburg','Bulgarien'),
-f(5,'A1','Türkei','Belgien'),f(5,'C2','Armenien','Zypern'),f(5,'A1','Italien','Frankreich'),f(5,'A3','Tschechien','Spanien'),f(5,'A3','England','Kroatien'),f(5,'C1','Albanien','Finnland'),f(5,'C1','San Marino','Belarus'),f(5,'C2','Montenegro','Lettland'),f(5,'C3','Moldau','Kasachstan'),f(5,'A2','Niederlande','Griechenland'),f(5,'A2','Serbien','Deutschland'),f(5,'B1','Schottland','Nordmazedonien'),f(5,'B1','Slowenien','Schweiz'),f(5,'C3','Slowakei','Färöer'),f(5,'C4','Bulgarien','Island'),f(5,'C4','Luxemburg','Estland'),f(5,'D1','Andorra','Gibraltar'),f(5,'D2','Liechtenstein','Aserbaidschan'),f(5,'B3','Kosovo','Israel'),f(5,'A4','Norwegen','Wales'),f(5,'B2','Georgien','Ungarn'),f(5,'A4','Portugal','Dänemark'),f(5,'B2','Nordirland','Ukraine'),f(5,'B3','Österreich','Irland'),f(5,'B4','Rumänien','Polen'),f(5,'B4','Schweden','Bosnien und Herzegowina'),
-f(6,'C2','Zypern','Montenegro'),f(6,'C2','Lettland','Armenien'),f(6,'C1','Belarus','Albanien'),f(6,'C1','Finnland','San Marino'),f(6,'A1','Belgien','Italien'),f(6,'A1','Frankreich','Türkei'),f(6,'A3','Kroatien','Tschechien'),f(6,'A3','Spanien','England'),f(6,'C3','Färöer','Moldau'),f(6,'C3','Kasachstan','Slowakei'),f(6,'C4','Estland','Bulgarien'),f(6,'C4','Island','Luxemburg'),f(6,'D2','Litauen','Liechtenstein'),f(6,'A2','Deutschland','Niederlande'),f(6,'A2','Griechenland','Serbien'),f(6,'B1','Nordmazedonien','Slowenien'),f(6,'B1','Schweiz','Schottland'),f(6,'D1','Gibraltar','Malta'),f(6,'A4','Dänemark','Norwegen'),f(6,'A4','Wales','Portugal'),f(6,'B2','Ungarn','Nordirland'),f(6,'B2','Ukraine','Georgien'),f(6,'B3','Israel','Österreich'),f(6,'B3','Irland','Kosovo'),f(6,'B4','Bosnien und Herzegowina','Rumänien'),f(6,'B4','Polen','Schweden')];
-function svgBadge(name){const m=meta[name]||['un','#0a3d73','#b9e800'];const ab=m[0].toUpperCase().replace('GB-','');const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 60"><rect width="90" height="60" rx="5" fill="${m[1]}"/><path d="M0 42 90 18v42H0z" fill="${m[2]}"/><rect x="24" y="13" width="42" height="34" rx="6" fill="white" fill-opacity=".9"/><text x="45" y="36" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#142235">${ab}</text></svg>`;return 'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(svg)}
-function flagSources(name){return [svgBadge(name)]}
-function setImg(img,name){img.onerror=null;img.src=svgBadge(name);img.alt=name}
-function leagueLogo(){const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 184"><rect width="300" height="184" rx="22" fill="#071c34"/><g transform="translate(5 2) scale(1.18)"><path d="M22 20 C70 5 96 35 140 18 C175 5 200 25 238 15 L238 128 C195 140 168 118 132 132 C91 148 61 119 22 136 Z" fill="#fff"/><path d="M32 32 L72 18 96 48 130 22 158 51 196 23 226 42 204 72 232 98 196 120 163 91 132 126 100 92 63 121 35 96 64 68Z" fill="#00a8e8"/><circle cx="67" cy="48" r="13" fill="#f5c542"/><circle cx="127" cy="58" r="13" fill="#df3348"/><circle cx="185" cy="50" r="13" fill="#b9e800"/><circle cx="96" cy="96" r="13" fill="#b9e800"/><circle cx="158" cy="98" r="13" fill="#f5c542"/><circle cx="211" cy="91" r="13" fill="#df3348"/></g></svg>`;return 'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(svg)}
-document.getElementById('leagueLogo').src=leagueLogo();
-function loadCustom(){try{return JSON.parse(localStorage.getItem(CUSTOM_KEY)||'[]')}catch{return []}}function saveCustom(x){localStorage.setItem(CUSTOM_KEY,JSON.stringify(x))}
-function allFixtures(){return fixtures.concat(loadCustom())}
-function addMatch(){const g=groupSelect.value,d=+daySelect.value,ts=groups[g];const home=prompt('Heimteam eingeben oder auswählen:\n'+ts.join(' / '),ts[0]);if(!home)return;const away=prompt('Auswärtsteam eingeben oder auswählen:\n'+ts.filter(x=>x!==home).join(' / '),ts.find(x=>x!==home)||'');if(!away)return;if(home===away){alert('Heim- und Auswärtsteam müssen unterschiedlich sein.');return}if(!ts.includes(home)||!ts.includes(away)){alert('Bitte ein Team aus der aktuell gewählten Gruppe verwenden.');return}const c=loadCustom();const id='c'+Date.now();c.push({d,g,h:home,a:away,id});saveCustom(c);renderMatches();renderTable()}
-function load(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}')}catch{return {}}}function save(x){localStorage.setItem(STORAGE_KEY,JSON.stringify(x))}function key(x){return x.id?`custom|${x.id}`:`${x.d}|${x.g}|${x.h}|${x.a}`}
-const groupSelect=document.getElementById('groupSelect'),daySelect=document.getElementById('matchday');Object.keys(groups).forEach(g=>groupSelect.add(new Option(`Gruppe ${g}`,g)));for(let d=1;d<=6;d++)daySelect.add(new Option(`Spieltag ${d}`,d));groupSelect.value=localStorage.getItem(GROUP_KEY)||'A2';daySelect.value=localStorage.getItem(DAY_KEY)||'1';
-groupSelect.onchange=()=>{localStorage.setItem(GROUP_KEY,groupSelect.value);render()};daySelect.onchange=()=>{localStorage.setItem(DAY_KEY,daySelect.value);renderMatches()};
-function render(){const g=groupSelect.value;document.getElementById('groupTitle').textContent=`Liga ${g[0]} · Gruppe ${g}`;document.getElementById('groupTeams').textContent=groups[g].join(' · ');renderMatches();renderTable();renderLegend()}
-function renderMatches(){const g=groupSelect.value,d=+daySelect.value,data=load(),ms=allFixtures().filter(x=>x.g===g&&x.d===d);const box=document.getElementById('matches');if(!ms.length){box.innerHTML='<div style="margin:24px;color:#64748b">An diesem Spieltag hat diese Gruppe keine Partie.</div>';return}box.innerHTML=ms.map((m,i)=>{const r=data[key(m)]||['',''];return `<div class="match"><div class="team home">${m.h}</div><img class="flag" id="fh${i}"><input inputmode="numeric" type="number" min="0" max="99" value="${r[0]}" data-k="${key(m)}" data-side="0"><span class="score-separator">:</span><input inputmode="numeric" type="number" min="0" max="99" value="${r[1]}" data-k="${key(m)}" data-side="1"><img class="flag" id="fa${i}"><div class="team away">${m.a}</div></div>`}).join('');ms.forEach((m,i)=>{setImg(document.getElementById('fh'+i),m.h);setImg(document.getElementById('fa'+i),m.a)});box.querySelectorAll('input').forEach(inp=>inp.addEventListener('input',()=>{const all=load(),k=inp.dataset.k,r=all[k]||['',''];r[+inp.dataset.side]=inp.value;all[k]=r;save(all);renderTable()}))}
-function renderTable(){const g=groupSelect.value,data=load(),t={};groups[g].forEach(n=>t[n]={p:0,pts:0,gf:0,ga:0});allFixtures().filter(x=>x.g===g).forEach(m=>{const r=data[key(m)];if(!r||r[0]===''||r[1]==='')return;const a=+r[0],b=+r[1];if(!Number.isFinite(a)||!Number.isFinite(b)||a<0||b<0)return;t[m.h].p++;t[m.a].p++;t[m.h].gf+=a;t[m.h].ga+=b;t[m.a].gf+=b;t[m.a].ga+=a;if(a>b)t[m.h].pts+=3;else if(b>a)t[m.a].pts+=3;else{t[m.h].pts++;t[m.a].pts++}});const s=Object.entries(t).sort((a,b)=>b[1].pts-a[1].pts||((b[1].gf-b[1].ga)-(a[1].gf-a[1].ga))||b[1].gf-a[1].gf||a[0].localeCompare(b[0],'de'));document.getElementById('table').innerHTML=s.map(([n,v],i)=>{const diff=v.gf-v.ga;let cls='';if(g[0]==='A'){if(i<2)cls='qualify';else if(i===2)cls='playoff';else cls='relegation'}else if(g[0]==='B'){if(i===0)cls='promotion';else if(i===1)cls='playoff';else if(i===2)cls='playoff';else cls='relegation'}else if(g[0]==='C'){if(i===0)cls='promotion';else if(i===1)cls='playoff';else if(i===3)cls='relegation'}else{if(i===0)cls='promotion';else if(i===1)cls='playoff'}return `<tr class="${cls}"><td>${i+1}</td><td class="team-cell"><img id="tf${i}">${n}</td><td>${v.p}</td><td><strong>${v.pts}</strong></td><td>${v.gf}:${v.ga}</td><td>${diff>0?'+':''}${diff}</td></tr>`}).join('');s.forEach(([n],i)=>setImg(document.getElementById('tf'+i),n))}
-function renderLegend(){const l=groupSelect.value[0];const x={A:'🔵 Platz 1–2: Viertelfinale · 🟡 Platz 3: Play-off · 🔴 Platz 4: Abstieg',B:'🟢 Platz 1: Aufstieg · 🟡 Platz 2/3: Play-offs · 🔴 Platz 4: Abstieg',C:'🟢 Platz 1: Aufstieg · 🟡 Platz 2: Play-off · 🔴 Platz 4: abhängig vom Vergleich der Gruppen',D:'🟢 Platz 1: Aufstieg · 🟡 Platz 2: Play-off'};document.getElementById('legend').textContent=x[l]}
-function resetGroup(){const g=groupSelect.value;if(!confirm(`Alle eingetragenen Ergebnisse der Gruppe ${g} löschen?`))return;const data=load();allFixtures().filter(x=>x.g===g).forEach(m=>delete data[key(m)]);save(data);render()}
-render();
+const STORAGE_KEY="nations-league-manager-2026-27";
+const GROUP_KEY="nations-league-current-group-2026-27";
+const DAY_KEY="nations-league-current-matchday-2026-27";
+const groups={"A1": ["Frankreich", "Italien", "Belgien", "Türkei"], "A2": ["Deutschland", "Niederlande", "Serbien", "Griechenland"], "A3": ["Spanien", "Kroatien", "England", "Tschechien"], "A4": ["Portugal", "Dänemark", "Norwegen", "Wales"], "B1": ["Schottland", "Schweiz", "Slowenien", "Nordmazedonien"], "B2": ["Ungarn", "Ukraine", "Georgien", "Nordirland"], "B3": ["Israel", "Österreich", "Irland", "Kosovo"], "B4": ["Polen", "Bosnien und Herzegowina", "Rumänien", "Schweden"], "C1": ["Albanien", "Finnland", "Belarus", "San Marino"], "C2": ["Montenegro", "Armenien", "Zypern", "Lettland"], "C3": ["Kasachstan", "Slowakei", "Färöer", "Moldau"], "C4": ["Island", "Bulgarien", "Estland", "Luxemburg"], "D1": ["Gibraltar", "Malta", "Andorra"], "D2": ["Litauen", "Aserbaidschan", "Liechtenstein"]};
+const flags={"Frankreich": "🇫🇷", "Italien": "🇮🇹", "Belgien": "🇧🇪", "Türkei": "🇹🇷", "Deutschland": "🇩🇪", "Niederlande": "🇳🇱", "Serbien": "🇷🇸", "Griechenland": "🇬🇷", "Spanien": "🇪🇸", "Kroatien": "🇭🇷", "England": "🏴", "Tschechien": "🇨🇿", "Portugal": "🇵🇹", "Dänemark": "🇩🇰", "Norwegen": "🇳🇴", "Wales": "🏴", "Schottland": "🏴", "Schweiz": "🇨🇭", "Slowenien": "🇸🇮", "Nordmazedonien": "🇲🇰", "Ungarn": "🇭🇺", "Ukraine": "🇺🇦", "Georgien": "🇬🇪", "Nordirland": "🇬🇧", "Israel": "🇮🇱", "Österreich": "🇦🇹", "Irland": "🇮🇪", "Kosovo": "🇽🇰", "Polen": "🇵🇱", "Bosnien und Herzegowina": "🇧🇦", "Rumänien": "🇷🇴", "Schweden": "🇸🇪", "Albanien": "🇦🇱", "Finnland": "🇫🇮", "Belarus": "🇧🇾", "San Marino": "🇸🇲", "Montenegro": "🇲🇪", "Armenien": "🇦🇲", "Zypern": "🇨🇾", "Lettland": "🇱🇻", "Kasachstan": "🇰🇿", "Slowakei": "🇸🇰", "Färöer": "🇫🇴", "Moldau": "🇲🇩", "Island": "🇮🇸", "Bulgarien": "🇧🇬", "Estland": "🇪🇪", "Luxemburg": "🇱🇺", "Gibraltar": "🇬🇮", "Malta": "🇲🇹", "Andorra": "🇦🇩", "Litauen": "🇱🇹", "Aserbaidschan": "🇦🇿", "Liechtenstein": "🇱🇮"};
+
+function leagueLogo(){
+ const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+ <rect width="160" height="160" rx="22" fill="#071c34"/>
+ <path d="M24 28C51 16 67 34 87 23c20-11 31 7 50-1v100c-21 9-35-8-54 2-22 11-37-8-59 2z" fill="#fff"/>
+ <path d="M31 38l24-12 17 22 20-19 17 22 23-19 13 18-17 20 17 20-22 18-20-20-21 23-19-23-22 20-17-18 19-20z" fill="#00a8e8"/>
+ <circle cx="54" cy="48" r="8" fill="#f5c542"/><circle cx="90" cy="55" r="8" fill="#df3348"/><circle cx="121" cy="50" r="8" fill="#b9e800"/>
+ <circle cx="70" cy="88" r="8" fill="#b9e800"/><circle cx="104" cy="91" r="8" fill="#f5c542"/>
+ <text x="80" y="145" text-anchor="middle" font-family="Arial" font-size="13" font-weight="800" fill="#fff">NATIONS LEAGUE</text></svg>`;
+ return "data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(svg);
+}
+document.getElementById("leagueLogo").src=leagueLogo();
+
+function currentGroup(){return document.getElementById("groupSelect").value}
+function currentDay(){return document.getElementById("matchday").value}
+function teams(){return groups[currentGroup()]||[]}
+function loadData(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}")}catch{return {}}}
+function saveData(data){localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}
+function groupData(data,g){if(!data[g])data[g]={};return data[g]}
+function teamOptions(selected){return teams().map(t=>`<option value="${t}" ${t===selected?"selected":""}>${t}</option>`).join("")}
+function flag(name){return flags[name]||"🏳️"}
+
+function initControls(){
+ const gs=document.getElementById("groupSelect");
+ Object.keys(groups).forEach(g=>gs.add(new Option(`Liga ${g[0]} · Gruppe ${g}`,g)));
+ gs.value=localStorage.getItem(GROUP_KEY)||"A2";
+ const ds=document.getElementById("matchday");
+ for(let i=1;i<=6;i++)ds.add(new Option(`Spieltag ${i}`,i));
+ ds.value=localStorage.getItem(DAY_KEY)||"1";
+}
+function changeGroup(){localStorage.setItem(GROUP_KEY,currentGroup());renderAll()}
+function changeMatchday(){localStorage.setItem(DAY_KEY,currentDay());renderMatches();renderTable()}
+function renderInfo(){document.getElementById("groupInfo").textContent=teams().join(" · ")}
+function renderMatches(){
+ const data=loadData(),g=currentGroup(),day=currentDay(),matches=(data[g]&&data[g][day])||[];
+ if(!matches.length){document.getElementById("matches").innerHTML=`<div class="empty">Noch keine Spiele für Spieltag ${day} eingetragen.</div>`;return}
+ let out="";
+ matches.forEach((m,i)=>out+=`<div class="match">
+ <span class="flag" id="flag1-${i}">${flag(m.team1)}</span>
+ <select id="team1-${i}">${teamOptions(m.team1)}</select>
+ <input type="number" min="0" max="99" id="t1-${i}" value="${m.t1??""}" aria-label="Tore Heimteam">
+ <span class="score-separator">:</span>
+ <input type="number" min="0" max="99" id="t2-${i}" value="${m.t2??""}" aria-label="Tore Auswärtsteam">
+ <select id="team2-${i}">${teamOptions(m.team2)}</select>
+ <span class="flag" id="flag2-${i}">${flag(m.team2)}</span>
+ <button onclick="save(${i})">💾 Speichern</button><button class="delete" onclick="removeMatch(${i})">❌</button></div>`);
+ document.getElementById("matches").innerHTML=out;
+ document.querySelectorAll(".match select,.match input").forEach(el=>{
+   el.addEventListener("change",saveAuto);
+   el.addEventListener("input",()=>{if(el.tagName==="INPUT")saveAuto()});
+ });
+}
+function saveAuto(){
+ const data=loadData(),g=currentGroup(),day=currentDay(),gd=groupData(data,g),matches=gd[day]||[];
+ document.querySelectorAll(".match").forEach((el,i)=>{
+  if(!matches[i])return;
+  matches[i].team1=document.getElementById(`team1-${i}`).value;
+  matches[i].team2=document.getElementById(`team2-${i}`).value;
+  matches[i].t1=document.getElementById(`t1-${i}`).value;
+  matches[i].t2=document.getElementById(`t2-${i}`).value;
+  document.getElementById(`flag1-${i}`).textContent=flag(matches[i].team1);
+  document.getElementById(`flag2-${i}`).textContent=flag(matches[i].team2);
+ });
+ gd[day]=matches;saveData(data);renderTable();
+}
+function addMatch(){
+ const data=loadData(),g=currentGroup(),day=currentDay(),gd=groupData(data,g);
+ if(!gd[day])gd[day]=[];
+ const used=new Set();gd[day].forEach(m=>{used.add(m.team1);used.add(m.team2)});
+ const free=teams().filter(t=>!used.has(t));
+ gd[day].push({team1:free[0]||teams()[0],team2:free[1]||teams()[1],t1:"",t2:""});
+ saveData(data);renderMatches();
+}
+function removeMatch(i){
+ const data=loadData(),g=currentGroup(),day=currentDay();
+ if(!data[g]||!data[g][day])return;
+ data[g][day].splice(i,1);saveData(data);renderMatches();renderTable();
+}
+function save(){saveAuto()}
+function rowClass(i,league){
+ if(league==="A")return i<2?"qualify":i===2?"playoff":"relegation";
+ if(league==="B")return i===0?"promotion":i===1||i===2?"playoff":"relegation";
+ if(league==="C")return i===0?"promotion":i===1?"playoff":i===3?"relegation":"";
+ return i===0?"promotion":i===1?"playoff":"";
+}
+function renderLegend(){
+ const l=currentGroup()[0],txt={
+ A:"🔵 Platz 1–2: Viertelfinale · 🟡 Platz 3: Play-off · 🔴 Platz 4: Abstieg",
+ B:"🟢 Platz 1: Aufstieg · 🟡 Platz 2/3: Play-offs · 🔴 Platz 4: Abstieg",
+ C:"🟢 Platz 1: Aufstieg · 🟡 Platz 2: Play-off · 🔴 Platz 4: Abstieg",
+ D:"🟢 Platz 1: Aufstieg · 🟡 Platz 2: Play-off"
+ };document.getElementById("legend").textContent=txt[l];
+}
+function renderTable(){
+ const data=loadData(),g=currentGroup(),table={};teams().forEach(t=>table[t]={played:0,points:0,goalsFor:0,goalsAgainst:0});
+ const gd=data[g]||{};
+ Object.values(gd).forEach(day=>{if(!Array.isArray(day))return;day.forEach(m=>{
+  if(m.t1===""||m.t2===""||!table[m.team1]||!table[m.team2]||m.team1===m.team2)return;
+  const a=parseInt(m.t1,10),b=parseInt(m.t2,10);if(Number.isNaN(a)||Number.isNaN(b)||a<0||b<0)return;
+  table[m.team1].played++;table[m.team2].played++;table[m.team1].goalsFor+=a;table[m.team1].goalsAgainst+=b;table[m.team2].goalsFor+=b;table[m.team2].goalsAgainst+=a;
+  if(a>b)table[m.team1].points+=3;else if(b>a)table[m.team2].points+=3;else{table[m.team1].points++;table[m.team2].points++}
+ })});
+ const sorted=Object.entries(table).sort((a,b)=>b[1].points-a[1].points||((b[1].goalsFor-b[1].goalsAgainst)-(a[1].goalsFor-a[1].goalsAgainst))||b[1].goalsFor-a[1].goalsFor||a[0].localeCompare(b[0],"de"));
+ document.getElementById("table").innerHTML=sorted.map(([t,v],i)=>{const d=v.goalsFor-v.goalsAgainst;return `<tr class="${rowClass(i,g[0])}"><td>${i+1}</td><td class="team-cell"><span class="table-flag">${flag(t)}</span>${t}</td><td>${v.played}</td><td><strong>${v.points}</strong></td><td>${v.goalsFor}:${v.goalsAgainst}</td><td>${d>0?"+":""}${d}</td></tr>`}).join("");
+}
+function renderAll(){renderInfo();renderMatches();renderLegend();renderTable()}
+initControls();renderAll();
 </script>
 </body></html>
